@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class DancingPadControl : MonoBehaviour 
 {
@@ -15,74 +16,116 @@ public class DancingPadControl : MonoBehaviour
         }
     }
 
+    public enum Orientation
+    {
+        Up = 0,
+        Down = 4,
+        Left = 6,
+        Right = 2,
+        UpLeft = 7,
+        UpRight = 1,
+        DownLeft = 5,
+        DownRight = 3
+    }
+
+    public Text OrientationText;
+    public Orientation CurrentOrientation;
     public float ButtonCooldown = 0.2f;
     public float CurrentCooldown = 0f;
 
-    public bool Up;
-    public bool Down;
-    public bool Left;
-    public bool Right;
-    public bool UpLeft;
-    public bool UpRight;
-    public bool DownLeft;
-    public bool DownRight;
-
 	void Update () 
     {
-        Up = false;
-        Down = false;
-        Left = false;
-        Right = false;
-        UpLeft = false;
-        UpRight = false;
-        DownLeft = false;
-        DownRight = false;
-
         CurrentCooldown += Time.deltaTime;
+
+	    if (Input.GetKeyDown(KeyCode.Keypad8))
+	    {
+	        CurrentOrientation = Orientation.Up;
+            UpdateOrientationText();
+	    }
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            CurrentOrientation = Orientation.Down;
+            UpdateOrientationText();
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+        {
+            CurrentOrientation = Orientation.Left;
+            UpdateOrientationText();
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad6))
+        {
+            CurrentOrientation = Orientation.Right;
+            UpdateOrientationText();
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad7))
+        {
+            CurrentOrientation = Orientation.UpLeft;
+            UpdateOrientationText();
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad9))
+        {
+            CurrentOrientation = Orientation.UpRight;
+            UpdateOrientationText();
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            CurrentOrientation = Orientation.DownLeft;
+            UpdateOrientationText();
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            CurrentOrientation = Orientation.DownRight;
+            UpdateOrientationText();
+        }
 
 	    if (CoolDownFinished())
 	    {
 	        if (Input.GetButtonDown("Up"))
 	        {
-	            Up = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 0f);
                 ResetCooldown();
 	        }
             if (Input.GetButtonDown("Down"))
             {
-                Down = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 180f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("Left"))
             {
-                Left = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 270f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("Right"))
             {
-                Right = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 90f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("UpLeft"))
             {
-                UpLeft = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 315f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("UpRight"))
             {
-                UpRight = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 45f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("DownLeft"))
             {
-                DownLeft = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 135f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("DownRight"))
             {
-                DownRight = true;
+                MainCharacter.Instance.Move(CurrentOrientation, 215f);
                 ResetCooldown();
             }
 	    }
+    }
+
+    public void UpdateOrientationText()
+    {
+        OrientationText.text = "Orientation:\n" + CurrentOrientation.ToString();
     }
 
     bool CoolDownFinished()
