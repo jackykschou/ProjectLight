@@ -29,6 +29,8 @@ public class WiiMoteController : MonoBehaviour
     void Start()
     {
         WiimoteManager.FindWiimotes();
+        var remote = WiimoteManager.Wiimotes[0];
+        remote.SendPlayerLED(true, false, false, true);
     }
 
 	void Update ()
@@ -47,9 +49,7 @@ public class WiiMoteController : MonoBehaviour
         RightArrow = false;
 
 	    var remote = WiimoteManager.Wiimotes[0];
-        remote.SendPlayerLED(true, false, false, true);
-        remote.RequestIdentifyWiiMotionPlus();
-        remote.ActivateWiiMotionPlus();
+
         int ret;
         do
         {
@@ -90,20 +90,9 @@ public class WiiMoteController : MonoBehaviour
         }
 	}
 
-    public void ReadyGo()
-    {
-        WiimoteManager.FindWiimotes();
-        foreach (Wiimote remote in WiimoteManager.Wiimotes)
-        {
-            remote.Accel.CalibrateAccel(AccelCalibrationStep.A_BUTTON_UP);
-            remote.Accel.CalibrateAccel(AccelCalibrationStep.LEFT_SIDE_UP);
-            remote.Accel.CalibrateAccel(AccelCalibrationStep.EXPANSION_UP);
-        }
-    }
-
     bool CoolDownFinished()
     {
-        return CurrentCooldown >= ButtonCooldown;
+        return true;
     }
 
     void ResetCooldown()

@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using UnityEngine;
+using WiimoteApi;
 
 public class MainCharacter : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class MainCharacter : MonoBehaviour
             return _instance;
         }
     }
+
+    public AudioClip CollisionSound;
+    public AudioClip OuchSound;
+    public AudioSource AudioSource2D;
 
     public Rigidbody Rigidbody;
     public float SpeedSetting;
@@ -40,4 +45,23 @@ public class MainCharacter : MonoBehaviour
     {
 	
 	}
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.tag == "Wall")
+        {
+            AudioSource.PlayClipAtPoint(OuchSound, Camera.main.transform.position);
+            StartCoroutine(Rumble());
+        }
+    }
+
+    IEnumerator Rumble()
+    {
+        var remote = WiimoteManager.Wiimotes[0];
+        remote.RumbleOn = true;
+        remote.SendStatusInfoRequest();
+        yield return new WaitForSeconds(0.5f);
+        remote.RumbleOn = false;
+        remote.SendStatusInfoRequest();
+    }
 }
