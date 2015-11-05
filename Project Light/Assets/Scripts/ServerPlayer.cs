@@ -1,15 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class ServerPlayer : MonoBehaviour {
+namespace Assets.Scripts
+{
+    public class ServerPlayer : MonoBehaviour 
+    {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
 }

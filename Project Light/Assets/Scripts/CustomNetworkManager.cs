@@ -6,16 +6,29 @@ namespace Assets.Scripts
     public class CustomNetworkManager : NetworkManager
     {
         public static CustomNetworkManager Instance;
+        public static bool GameStarted = false;
+        public GameObject NetworkSettingUi;
 
         public bool IsServer;
+
+        //Both
+        public GameObject GameManager;
         public GameObject Guider;
-        public GameObject GuiderConroller;
+        public GameObject GuiderController;
         public GameObject GuiderView;
         public GameObject Traveller;
+        public GameObject World;
+
+        public int NumberOfPlayer = 0;
 
         void Awake()
         {
             Instance = FindObjectOfType<CustomNetworkManager>();
+            ClientScene.RegisterPrefab(GameManager);
+            ClientScene.RegisterPrefab(Guider);
+            ClientScene.RegisterPrefab(GuiderController);
+            ClientScene.RegisterPrefab(GuiderView);
+            ClientScene.RegisterPrefab(Traveller);
         }
 
         public override void OnStartServer()
@@ -26,20 +39,24 @@ namespace Assets.Scripts
 
         public override void OnClientConnect(NetworkConnection conn)
         {
-            if (!IsServer)
-            {
-                var guiderConroller = Instantiate(GuiderConroller);
-                var guiderView = Instantiate(GuiderView);
-            }
+            NetworkSettingUi.SetActive(false);
         }
 
         public override void OnServerConnect(NetworkConnection conn)
         {
-            Debug.Log("conn.address  " + conn.address);
-            Debug.Log("networkAddress  " + networkAddress);
             if (conn.address != "localServer")
             {
                 var guilder = Instantiate(Guider);
+            }
+
+            NumberOfPlayer++;
+            Debug.Log("NumberOfPlayer");
+            World.SetActive(true);
+            if (NumberOfPlayer == 2)
+            {
+                GameStarted = true;
+                var guiderConroller = Instantiate(GuiderController);
+                NetworkServer.Spawn(guiderConroller);
             }
         }
 
