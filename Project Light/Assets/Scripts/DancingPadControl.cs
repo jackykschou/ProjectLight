@@ -40,42 +40,42 @@ public class DancingPadControl : MonoBehaviour
 	    if (Input.GetKeyDown(KeyCode.Keypad8))
 	    {
 	        CurrentOrientation = Orientation.Up;
-            UpdateOrientationText();
+            UpdateOrientation();
 	    }
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
             CurrentOrientation = Orientation.Down;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             CurrentOrientation = Orientation.Left;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
         if (Input.GetKeyDown(KeyCode.Keypad6))
         {
             CurrentOrientation = Orientation.Right;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
         if (Input.GetKeyDown(KeyCode.Keypad7))
         {
             CurrentOrientation = Orientation.UpLeft;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
         if (Input.GetKeyDown(KeyCode.Keypad9))
         {
             CurrentOrientation = Orientation.UpRight;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             CurrentOrientation = Orientation.DownLeft;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
         if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             CurrentOrientation = Orientation.DownRight;
-            UpdateOrientationText();
+            UpdateOrientation();
         }
 
 	    if (CoolDownFinished())
@@ -123,9 +123,11 @@ public class DancingPadControl : MonoBehaviour
 	    }
     }
 
-    public void UpdateOrientationText()
+    public void UpdateOrientation()
     {
-        OrientationText.text = "Orientation:\n" + CurrentOrientation.ToString();
+        OrientationText.text = "Orientation:\n" + CurrentOrientation;
+        MainCharacter.Instance.ForwardDirection = Quaternion.AngleAxis(45f * (int)CurrentOrientation, Vector3.up) 
+            * new Vector3(0f, 0f, 1f);
     }
 
     bool CoolDownFinished()

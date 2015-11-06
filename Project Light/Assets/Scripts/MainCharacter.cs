@@ -19,7 +19,10 @@ public class MainCharacter : MonoBehaviour
 
     public AudioClip CollisionSound;
     public AudioClip OuchSound;
-    public AudioSource AudioSource2D;
+    public AudioSource AudioSource3D1;
+    public AudioSource AudioSource3D2;
+    public AudioSource AudioSource3D3;
+    public AudioSource AudioSource3D4;
 
     public Rigidbody Rigidbody;
     public float SpeedSetting;
@@ -28,11 +31,11 @@ public class MainCharacter : MonoBehaviour
 
     public void Move(DancingPadControl.Orientation orientation, float directionAngle)
     {
-        ForwardDirection = Quaternion.AngleAxis(45f * (int)orientation, Vector3.up) * 
+        var dir = Quaternion.AngleAxis(45f * (int)orientation, Vector3.up) * 
                             new Vector3(0f, 0f, 1f);
-        ForwardDirection = Quaternion.AngleAxis(directionAngle, Vector3.up) *
-                           ForwardDirection;
-        Rigidbody.AddForce(ForwardDirection * Speed);
+        dir = Quaternion.AngleAxis(directionAngle, Vector3.up) *
+                           dir;
+        Rigidbody.AddForce(dir * Speed);
 
     }
 
@@ -40,12 +43,19 @@ public class MainCharacter : MonoBehaviour
 	{
 	    Rigidbody = GetComponent<Rigidbody>();
 	}
-	
-	void Update () 
-    {
-	
-	}
 
+    public void CastForObstacles()
+    {
+        var layerMask = 1 << 10;
+        if (Physics.Raycast(transform.position, ForwardDirection, 5f, layerMask) ||
+            Physics.Raycast(transform.position, Quaternion.AngleAxis(-10f, Vector3.up) * ForwardDirection, 5f, layerMask) ||
+            Physics.Raycast(transform.position, Quaternion.AngleAxis(10f, Vector3.up) * ForwardDirection, 5f, layerMask))
+        {
+            AudioSource.PlayClipAtPoint(CollisionSound, Camera.main.transform.position);
+            StartCoroutine(Rumble());
+        }
+    }
+	
     void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.tag == "Wall")

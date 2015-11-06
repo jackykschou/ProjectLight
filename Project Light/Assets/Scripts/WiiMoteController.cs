@@ -16,13 +16,6 @@ public class WiiMoteController : MonoBehaviour
         }
     }
 
-    public bool ButtonA;
-    public bool ButtonB;
-    public bool UpArrow;
-    public bool DownArrow;
-    public bool LeftArrow;
-    public bool RightArrow;
-
     public float ButtonCooldown = 0.2f;
     public float CurrentCooldown = 0f;
 
@@ -41,12 +34,6 @@ public class WiiMoteController : MonoBehaviour
 	    }
 
 	    CurrentCooldown += Time.deltaTime;
-        ButtonA = false;
-        ButtonB = false;
-        UpArrow = false;
-        DownArrow = false;
-        LeftArrow = false;
-        RightArrow = false;
 
 	    var remote = WiimoteManager.Wiimotes[0];
 
@@ -55,44 +42,40 @@ public class WiiMoteController : MonoBehaviour
         {
             ret = remote.ReadWiimoteData();
         } while (ret > 0);
-        if (CoolDownFinished())
-        {
-            if (remote.Button.a)
-            {
-                ButtonA = true;
-                ResetCooldown();
-            }
-            if (remote.Button.b)
-            {
-                ButtonB = true;
-                ResetCooldown();
-            }
-            if (remote.Button.d_up)
-            {
-                UpArrow = true;
-                ResetCooldown();
-            }
-            if (remote.Button.d_down)
-            {
-                DownArrow = true;
-                ResetCooldown();
-            }
-            if (remote.Button.d_left)
-            {
-                LeftArrow = true;
-                ResetCooldown();
-            }
-            if (remote.Button.d_right)
-            {
-                RightArrow = true;
-                ResetCooldown();
-            }
-        }
+
+	    if (CoolDownFinished())
+	    {
+	        if (remote.Button.a)
+	        {
+	            ResetCooldown();
+	        }
+	        if (remote.Button.b)
+	        {
+	            MainCharacter.Instance.CastForObstacles();
+	            ResetCooldown();
+	        }
+	        if (remote.Button.d_up)
+	        {
+	            ResetCooldown();
+	        }
+	        if (remote.Button.d_down)
+	        {
+	            ResetCooldown();
+	        }
+	        if (remote.Button.d_left)
+	        {
+	            ResetCooldown();
+	        }
+	        if (remote.Button.d_right)
+	        {
+	            ResetCooldown();
+	        }
+	    }
 	}
 
     bool CoolDownFinished()
     {
-        return true;
+        return CurrentCooldown >= ButtonCooldown;
     }
 
     void ResetCooldown()
