@@ -17,8 +17,10 @@ public class MainCharacter : MonoBehaviour
         }
     }
 
+    public int RemainingCoinCount;
     public AudioClip CollisionSound;
     public AudioClip OuchSound;
+    public AudioClip WinSound;
     public AudioSource AudioSource3D1;
     public AudioSource AudioSource3D2;
     public AudioSource AudioSource3D3;
@@ -28,6 +30,15 @@ public class MainCharacter : MonoBehaviour
     public float SpeedSetting;
     public float Speed;
     public Vector3 ForwardDirection;
+
+    public void CollectCoin()
+    {
+        RemainingCoinCount--;
+        if (RemainingCoinCount == 0)
+        {
+            AudioSource.PlayClipAtPoint(WinSound, Camera.main.transform.position);
+        }
+    }
 
     public void Move(DancingPadControl.Orientation orientation, float directionAngle)
     {
