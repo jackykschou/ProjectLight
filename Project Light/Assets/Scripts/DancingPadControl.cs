@@ -112,12 +112,12 @@ public class DancingPadControl : MonoBehaviour
             }
             if (Input.GetButtonDown("DownLeft"))
             {
-                MainCharacter.Instance.Move(CurrentOrientation, 135f);
+                MainCharacter.Instance.Move(CurrentOrientation, 215f);
                 ResetCooldown();
             }
             if (Input.GetButtonDown("DownRight"))
             {
-                MainCharacter.Instance.Move(CurrentOrientation, 215f);
+                MainCharacter.Instance.Move(CurrentOrientation, 135f);
                 ResetCooldown();
             }
 	    }

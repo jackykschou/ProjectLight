@@ -37,18 +37,26 @@ public class AudiosZone : MonoBehaviour
 
     void OnTriggerStay(Collider col)
     {
+        if (AudioSource == null)
+        {
+            return;
+        }
         if (Vector3.Distance(col.transform.position, ColPoint) < 10f)
         {
-            AudioSource.volume = (Vector3.Distance(col.transform.position, ColPoint) / 10f);
+            AudioSource.volume = (Vector3.Distance(col.transform.position, ColPoint) / 20f);
         }
         else
         {
-            AudioSource.volume = 1f;
+            AudioSource.volume = 0.5f;
         }
     }
 
     void OnTriggerExit(Collider col)
     {
+        if (AudioSource == null)
+        {
+            return;
+        }
         AudioSource.clip = null;
         AudioSource = null;
     }

@@ -49,7 +49,7 @@ public class WiiMoteController : MonoBehaviour
 	        {
 	            ResetCooldown();
 	        }
-	        if (remote.Button.b)
+	        if (remote.Button.b || Input.GetKeyDown(KeyCode.Space))
 	        {
 	            MainCharacter.Instance.CastForObstacles();
 	            ResetCooldown();
